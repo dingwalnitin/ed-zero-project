@@ -1,0 +1,98 @@
+import pandas as pd
+
+items3 = {'101A': ['Brown rice', [50, 45.50, 41.25]],
+         '102B': ['Whole wheat', [30, 27.45, 21.50]],
+         '102C': ['Tomato sauce', [25.50, 20.25, 18.70]],
+         '103D': ['Mustard', [40,39.45,37]],
+         '104E': ['Barbecue sauce', [45, 43, 41.50]],
+         '105F': ['Red-wine vinegar', [4000, 3800, 3750]],
+         '106G': ['Salsa', [200, 189.50, 170]],
+         '107H': ['Extra Virgin Olive Oil', [500, 478.5, 455.7]],
+         '108I': ['Canola Oil', [200, 180, 118]],
+         '109J': ['Hot Pepper Sauce', [100, 98.50, 91.25]],
+         '110K': ['Bananas', [60, 55, 50]],
+         '111L': ['Apples', [300, 250, 120]],
+         '112M': ['Oranges', [200, 140, 110]],
+         '113N': ['Mangoes', [100, 80, 50]],
+         '114O': ['Strawberries', [100, 90, 80]],
+         '115P': ['Blueberries', [95, 80, 75]],
+         '116Q': ['Green Teas', [250, 225, 200]],
+         '117R': ['Sparkling Water', [20, 14.50, 11]],
+         '118S': ['Dried Apricots', [270, 250, 230]],
+         '119T': ['Dried Figs', [100, 95, 90]],
+         '120U': ['Dried Prunes', [90, 85, 80]],
+         '121V': ['Almonds', [900, 870, 850]],
+         '122W': ['Cashews', [1000, 950, 910]],
+         '123X': ['Walnuts', [800, 770, 720]],
+         '124Y': ['Peanuts', [400, 380, 360]],
+         '125Z': ['Pecans', [350, 320, 300]],
+         '201A': ['Pistachios', [1200, 1180, 1160]],
+         '202B': ['Sunflower Seeds', [150, 112.50, 103.45]],
+         '203C': ['Sesame Seeds', [120.50, 110.25, 101.40]],
+         '204D': ['Whole Flaxseeds', [95.20, 90.45, 89.20]]
+         }
+
+reg_cus = {
+'AAA1001' : ['Surian' , 9500012345],
+
+'AAA1002' : ['Nila' , 9500023456],
+
+'AAA1003' : ['Arivazhagan' , 9712300078],
+
+'AAA1004' : ['Nithin Kumar' , 9586233333],
+
+'AAA1005' : ['Aravind' , 6931245872]
+}
+
+def customer_credentials(c_id):
+    credentials = []
+    if c_id:
+        credentials.append(c_id)
+        credentials.append(reg_cus[c_id][0])
+        credentials.append(reg_cus[c_id][1])
+    else:
+        credentials.append("Non-Registered")
+        credentials.append(input("Name:"))
+        credentials.append(input("Mobile no:"))
+    return credentials
+
+def items(l_c):
+    l_i = []
+    for i in range(len(l_c)):
+        l_i.append(items3[l_c[i]][0])
+    return l_i
+
+def price(l_c,l_t,l_l):
+    l_p = []
+    for i in range(len(l_c)):
+        quality = items3[l_c[i]][1][l_l[i]-1]
+        quantity = l_t[i]
+        price = quality*quantity
+        l_p.append(price)
+    return l_p
+
+customer_id = input("Enter the customer id:")
+if customer_id == "":
+    credentials = customer_credentials(customer_id)
+
+i = 1
+l_c = []
+l_t = []
+l_l = []
+while i:
+    item_code = input("Enter the item code:")
+    if item_code == "":
+        break
+    l_c.append(item_code)
+    l_t.append(float(input("Enter the quantity of the item:")))
+    l_l.append(int(input("Enter the quality of the item:")))
+
+if customer_id:
+    credentials = customer_credentials(customer_id)
+print("Customer_id:",credentials[0])
+print("Name:",credentials[1])
+print("Mobile no.:",credentials[2])
+
+data = {"Code":l_c,"Item":items(l_c),"Quantity":l_t,"Quality":l_l,"Price":price(l_c,l_t,l_l)}
+bill = pd.DataFrame(data)
+print(bill)
